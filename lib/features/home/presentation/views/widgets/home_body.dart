@@ -1,6 +1,7 @@
 import 'package:cinema_app/core/constant/fonts/fontsstyle.dart';
 import 'package:cinema_app/features/home/presentation/views/widgets/carouselslide.dart';
 import 'package:cinema_app/features/home/presentation/views/widgets/lists/lastrealse_list.dart';
+import 'package:cinema_app/features/home/presentation/views/widgets/lists/listcategory.dart';
 import 'package:cinema_app/features/home/presentation/views/widgets/tabbar.dart';
 import 'package:cinema_app/features/home/presentation/views/widgets/lists/trending_listview.dart';
 import 'package:flutter/material.dart';
@@ -30,9 +31,9 @@ class HomeBody extends StatelessWidget {
                 ),
               ),
               const SliverToBoxAdapter(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 15.0),
-                  child: CustomTabBar(),
+                child: SizedBox(
+                  height: 50,
+                  child: Listcategory(),
                 ),
               ),
               const SliverToBoxAdapter(

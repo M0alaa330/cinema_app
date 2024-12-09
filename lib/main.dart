@@ -1,5 +1,6 @@
 import 'package:cinema_app/core/utlies/helpers/applocators.dart';
 import 'package:cinema_app/features/home/data/repo/home_repo_imple.dart';
+import 'package:cinema_app/features/home/presentation/controls/cubit/categorymovies/category_cubit.dart';
 import 'package:cinema_app/features/home/presentation/controls/cubit/last_realse/last_realse_cubit.dart';
 import 'package:cinema_app/features/home/presentation/controls/cubit/popular_now/popular_cubit.dart';
 import 'package:cinema_app/features/home/presentation/controls/cubit/trending/Trending_cubit.dart';
@@ -38,6 +39,10 @@ class MyApp extends StatelessWidget {
           BlocProvider(
               create: (context) =>
                   SearchCubit(searchRepoImple: getIt.get<SearchRepoImple>())),
+          BlocProvider(
+              create: (context) =>
+                  CategoryCubit(homeRepoImple: getIt.get<HomeRepoImple>())
+                    ..fetchcategory()),
         ],
         child: const MaterialApp(
           debugShowCheckedModeBanner: false,

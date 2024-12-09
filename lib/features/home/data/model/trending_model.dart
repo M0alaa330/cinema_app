@@ -18,7 +18,7 @@ class TrendingModel {
   factory TrendingModel.fromjson(Map<String, dynamic> json) {
     return TrendingModel(
         id: json['id'],
-        name: json['name'],
+        name: json['title'],
         desc: json['overview'],
         posterpath: json['poster_path'],
         originallanguage: json['original_language'],

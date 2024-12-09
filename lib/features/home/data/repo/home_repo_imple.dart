@@ -1,4 +1,5 @@
 import 'package:cinema_app/core/api/api_service.dart';
+import 'package:cinema_app/features/home/data/model/movies_category.dart';
 import 'package:cinema_app/features/home/data/model/trending_model.dart';
 import 'package:cinema_app/features/home/data/repo/home_repo.dart';
 import 'package:dartz/dartz.dart';
@@ -52,6 +53,22 @@ class HomeRepoImple implements HomeRepo {
       }
 
       return right(popularlist);
+    } catch (e) {
+      return left(e.toString());
+    }
+  }
+
+  @override
+  Future<Either<String, List<MoviesCategory>>> getcatergory() async {
+    try {
+      var data = await apiService.getMovies(
+          endpoint: "genre/movie/list",
+          apikey: "?api_key=f26312e249bb4d2428e19c8bfb683008&language=en-US");
+      List<MoviesCategory> categorylist = [];
+      for (var i in data['genres']) {
+        categorylist.add(MoviesCategory.fromJSON(i));
+      }
+      return right(categorylist);
     } catch (e) {
       return left(e.toString());
     }
