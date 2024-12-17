@@ -1,10 +1,11 @@
 import 'package:cinema_app/core/constant/fonts/fontsstyle.dart';
+import 'package:cinema_app/core/shared_prefraces_helper/shared_pref_helper.dart';
 import 'package:cinema_app/features/home/data/model/trending_model.dart';
 import 'package:cinema_app/features/auth/presentation/views/widgets/loginsocial.dart';
 import 'package:cinema_app/features/home/presentation/views/widgets/lists/similar_list.dart';
 import 'package:flutter/material.dart';
 
-class Moviedetailsbody extends StatelessWidget {
+class Moviedetailsbody extends StatefulWidget {
   const Moviedetailsbody({
     super.key,
     required this.datas,
@@ -12,8 +13,38 @@ class Moviedetailsbody extends StatelessWidget {
   final TrendingModel datas;
 
   @override
+  State<Moviedetailsbody> createState() => _MoviedetailsbodyState();
+}
+
+class _MoviedetailsbodyState extends State<Moviedetailsbody> {
+  bool isfavourites = false;
+  Future<void> checkIfFavourite() async {
+    List<String> favourites = SharedPrefHelper.getFavourites();
+    setState(() {
+      isfavourites = favourites.contains(widget.datas.id);
+    });
+  }
+
+  Future<void> toggleFavourite() async {
+    if (isfavourites) {
+      await SharedPrefHelper.removeFavourite(itemId: widget.datas.id!);
+    } else {
+      await SharedPrefHelper.getFavourite(itemId: widget.datas.id!);
+    }
+    setState(() {
+      isfavourites = !isfavourites;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    checkIfFavourite();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    print(datas.name);
+    print(widget.datas.name);
     return Scaffold(
         backgroundColor: const Color(0xff05041f),
         body: CustomScrollView(slivers: [
@@ -27,9 +58,9 @@ class Moviedetailsbody extends StatelessWidget {
                     height: 400,
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                        image: datas.posterpath != null
+                        image: widget.datas.posterpath != null
                             ? NetworkImage(
-                                "https://image.tmdb.org/t/p/w500${datas.posterpath}")
+                                "https://image.tmdb.org/t/p/w500${widget.datas.posterpath}")
                             : const AssetImage("assets/images/error.jpg")
                                 as ImageProvider,
                         fit: BoxFit.fill,
@@ -58,15 +89,20 @@ class Moviedetailsbody extends StatelessWidget {
                   Positioned(
                     right: 10,
                     top: 50,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.black26,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: const Icon(
-                        Icons.star_outline_rounded,
-                        size: 50,
-                        color: Colors.white,
+                    child: InkWell(
+                      onTap: toggleFavourite,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.black26,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Icon(
+                          isfavourites
+                              ? Icons.star_rounded
+                              : Icons.star_outline_rounded,
+                          size: 50,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ),
@@ -75,12 +111,14 @@ class Moviedetailsbody extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(right: 180, bottom: 20),
                 child: Text(
-                  datas.name?.isNotEmpty == true ? datas.name! : "no title",
+                  widget.datas.name?.isNotEmpty == true
+                      ? widget.datas.name!
+                      : "no title",
                   style: textStyle(Colors.white, 30, FontWeight.bold),
                 ),
               ),
               Text(
-                "${datas.originallanguage ?? 'Unknown'} | ${datas.releasedate ?? 'Unknown'} | Popularity: ${datas.popularity ?? 'N/A'}",
+                "${widget.datas.originallanguage ?? 'Unknown'} | ${widget.datas.releasedate ?? 'Unknown'} | Popularity: ${widget.datas.popularity ?? 'N/A'}",
                 style: textStyle(Colors.grey[400]!, 18, FontWeight.bold),
               ),
               const SizedBox(height: 20),
@@ -107,7 +145,7 @@ class Moviedetailsbody extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: Text(
-                  datas.desc ?? 'No Title',
+                  widget.datas.desc ?? 'No Title',
                   overflow: TextOverflow.ellipsis,
                   style: textStyle(Colors.white70, 18, FontWeight.bold),
                   maxLines: 8,
@@ -131,7 +169,7 @@ class Moviedetailsbody extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 10),
-              Similarlist(data: datas)
+              Similarlist(data: widget.datas)
             ]),
           ),
         ]));

@@ -1,5 +1,6 @@
 import 'package:cinema_app/core/constant/fonts/fontsstyle.dart';
 import 'package:cinema_app/core/utlies/textfield.dart';
+import 'package:cinema_app/features/home/data/model/trending_model.dart';
 import 'package:cinema_app/features/search/presentation/controller/cubit/search_cubit.dart';
 import 'package:cinema_app/features/search/presentation/controller/cubit/search_state.dart';
 import 'package:cinema_app/features/search/presentation/views/widgets/custom_container.dart';
@@ -7,8 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SearchBody extends StatelessWidget {
-  SearchBody({super.key});
+  SearchBody({super.key, this.data});
   final TextEditingController search = TextEditingController();
+  final TrendingModel? data;
 
   @override
   Widget build(BuildContext context) {

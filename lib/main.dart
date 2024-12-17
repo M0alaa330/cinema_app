@@ -1,3 +1,4 @@
+import 'package:cinema_app/core/shared_prefraces_helper/shared_pref_helper.dart';
 import 'package:cinema_app/core/utlies/helpers/applocators.dart';
 import 'package:cinema_app/features/home/data/repo/home_repo_imple.dart';
 import 'package:cinema_app/features/home/presentation/controls/cubit/categorymovies/category_cubit.dart';
@@ -10,7 +11,9 @@ import 'package:cinema_app/features/splash/presentation/views/splash_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await SharedPrefHelper.cacheInitialization();
   runApp(const MyApp());
   setup();
 }
